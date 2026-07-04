@@ -1,0 +1,63 @@
+schemaVersion: 2.0.0
+
+fileExistenceTests:
+  - name: 'ImageMagick binary exists'
+    path: '/usr/bin/magick'
+    shouldExist: true
+    permissions: '-rwxr-xr-x'
+
+  # Alpine's imagemagick package ships the IMv6-style entry points as links to
+  # magick. Existence only - no permission assertion, so symlinks pass and the
+  # checks are easy to drop should Alpine ever stop shipping the legacy names.
+  - name: 'Legacy convert entry point exists'
+    path: '/usr/bin/convert'
+    shouldExist: true
+
+  - name: 'Legacy identify entry point exists'
+    path: '/usr/bin/identify'
+    shouldExist: true
+
+  - name: 'ImageMagick security policy exists'
+    path: '/etc/ImageMagick-7/policy.xml'
+    shouldExist: true
+
+  - name: 'Working directory exists'
+    path: '/tmp/workdir'
+    shouldExist: true
+    isExecutableBy: 'any'
+
+fileContentTests:
+  - name: 'CA certificates installed'
+    path: '/etc/ssl/certs/ca-certificates.crt'
+    expectedContents: ['-----BEGIN CERTIFICATE-----']
+
+# Delegate shared libraries are checked via globs rather than hardcoded paths:
+# Alpine ships versioned .so files whose SONAME can change on Alpine bumps, so
+# an exact path would break on updates. Functional format coverage lives in
+# magick_command_test.yml; these checks just confirm the delegate runtime
+# libraries are physically present.
+commandTests:
+  - name: 'libjpeg shared library present (JPEG delegate)'
+    command: 'sh'
+    args: ['-c', 'ls /usr/lib/libjpeg.so.*']
+    exitCode: 0
+
+  - name: 'libwebp shared library present (WebP delegate)'
+    command: 'sh'
+    args: ['-c', 'ls /usr/lib/libwebp.so.*']
+    exitCode: 0
+
+  - name: 'libheif shared library present (HEIC delegate)'
+    command: 'sh'
+    args: ['-c', 'ls /usr/lib/libheif.so.*']
+    exitCode: 0
+
+  - name: 'librsvg shared library present (SVG delegate)'
+    command: 'sh'
+    args: ['-c', 'ls /usr/lib/librsvg-2.so.*']
+    exitCode: 0
+
+  - name: 'libtiff shared library present (TIFF delegate)'
+    command: 'sh'
+    args: ['-c', 'ls /usr/lib/libtiff.so.*']
+    exitCode: 0

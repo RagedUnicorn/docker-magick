@@ -1,0 +1,67 @@
+# Docker Compose configuration for common image conversion tasks
+#
+# Usage examples:
+#   docker compose -f examples/docker-compose.convert.yml run --rm png-to-jpg
+#   docker compose -f examples/docker-compose.convert.yml run --rm jpg-to-webp
+#   docker compose -f examples/docker-compose.convert.yml run --rm heic-to-jpg
+#
+# Place your input files in ./media/input/
+# Output files will be saved to ./media/output/
+
+services:
+  # Base service configuration (inherited by other services)
+  magick-base:
+    image: ragedunicorn/magick:${MAGICK_VERSION:-latest}
+    volumes:
+      - ../media:/tmp/workdir
+    working_dir: /tmp/workdir
+    stdin_open: true
+    tty: true
+
+  # Convert PNG to JPEG
+  png-to-jpg:
+    extends:
+      service: magick-base
+    command: >
+      input/image.png
+      -quality 90
+      output/image.jpg
+
+  # Convert JPEG to WebP (smaller files for the web)
+  jpg-to-webp:
+    extends:
+      service: magick-base
+    command: >
+      input/image.jpg
+      -quality 80
+      output/image.webp
+
+  # Convert iPhone HEIC photos to JPEG
+  heic-to-jpg:
+    extends:
+      service: magick-base
+    command: >
+      input/photo.heic
+      output/photo.jpg
+
+  # Rasterize an SVG to PNG
+  svg-to-png:
+    extends:
+      service: magick-base
+    command: >
+      input/image.svg
+      output/image.png
+
+  # Batch convert all PNG files to JPEG
+  # Usage: docker compose -f examples/docker-compose.convert.yml run --rm batch-convert
+  batch-convert:
+    extends:
+      service: magick-base
+    entrypoint: /bin/sh
+    command: >
+      -c "for file in input/*.png; do
+        if [ -f \"$$file\" ]; then
+          filename=$$(basename \"$$file\" .png);
+          magick \"$$file\" -quality 90 \"output/$$filename.jpg\";
+        fi
+      done"

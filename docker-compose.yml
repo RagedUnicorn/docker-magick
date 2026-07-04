@@ -1,0 +1,43 @@
+# Docker Compose configuration for ImageMagick
+#
+# Usage:
+#   docker-compose run --rm magick [magick-options]
+#
+# Examples:
+#   docker-compose run --rm magick input/image.png output/image.jpg
+#   docker-compose run --rm magick input/photo.jpg -resize 50% output/photo_small.jpg
+#
+# The service mounts ./media as the working directory, allowing you to:
+#   - Place input files in ./media/input/
+#   - Find output files in ./media/output/
+#
+# The image version is set in the .env file (default: latest)
+# You can override it by:
+#   - Editing the .env file
+#   - Setting environment variable: MAGICK_VERSION=7.1.2.24 docker-compose run --rm magick [args]
+
+services:
+  magick:
+    image: ragedunicorn/magick:${MAGICK_VERSION:-latest}
+    volumes:
+      # Mount local media directory for input/output files
+      - ./media:/tmp/workdir
+    working_dir: /tmp/workdir
+    # Remove container after execution
+    stdin_open: true
+    tty: true
+
+    # Environment variables (optional)
+    environment:
+      # Add any environment variables if needed
+      - TERM=xterm-256color
+
+    # Resource limits (optional - uncomment to use)
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '2'
+    #       memory: 2G
+    #     reservations:
+    #       cpus: '1'
+    #       memory: 1G

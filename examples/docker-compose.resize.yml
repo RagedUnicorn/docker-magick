@@ -1,0 +1,66 @@
+# Docker Compose configuration for common resize and optimization tasks
+#
+# Usage examples:
+#   docker compose -f examples/docker-compose.resize.yml run --rm thumbnail
+#   docker compose -f examples/docker-compose.resize.yml run --rm resize-half
+#   docker compose -f examples/docker-compose.resize.yml run --rm resize-width
+#
+# Place your input files in ./media/input/
+# Output files will be saved to ./media/output/
+
+services:
+  # Base service configuration (inherited by other services)
+  magick-base:
+    image: ragedunicorn/magick:${MAGICK_VERSION:-latest}
+    volumes:
+      - ../media:/tmp/workdir
+    working_dir: /tmp/workdir
+    stdin_open: true
+    tty: true
+
+  # Create a thumbnail (fits within 150x150, strips metadata)
+  thumbnail:
+    extends:
+      service: magick-base
+    command: >
+      input/image.jpg
+      -thumbnail 150x150
+      output/thumbnail.jpg
+
+  # Resize to half the original size
+  resize-half:
+    extends:
+      service: magick-base
+    command: >
+      input/image.jpg
+      -resize 50%
+      output/image_half.jpg
+
+  # Resize to a fixed width (keeps aspect ratio)
+  resize-width:
+    extends:
+      service: magick-base
+    command: >
+      input/image.jpg
+      -resize 800x
+      output/image_800.jpg
+
+  # Strip metadata (EXIF, profiles) without resizing
+  strip-metadata:
+    extends:
+      service: magick-base
+    command: >
+      input/image.jpg
+      -strip
+      output/image_stripped.jpg
+
+  # Web-optimized variant: resize, strip metadata, recompress
+  web-optimize:
+    extends:
+      service: magick-base
+    command: >
+      input/image.jpg
+      -resize 1200x>
+      -strip
+      -quality 85
+      output/image_web.jpg

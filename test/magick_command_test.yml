@@ -1,0 +1,55 @@
+schemaVersion: 2.0.0
+
+commandTests:
+  - name: 'ImageMagick version check'
+    command: 'magick'
+    args: ['-version']
+    expectedOutput:
+      - 'ImageMagick 7.1.2'
+    exitCode: 0
+
+  # PNG and GIF coders ship with the main imagemagick package
+  - name: 'Built-in formats available'
+    command: 'magick'
+    args: ['-list', 'format']
+    expectedOutput:
+      - 'PNG'
+      - 'GIF'
+    exitCode: 0
+
+  # These formats only appear in the list when the delegate subpackage's coder
+  # module is installed (modules build), so this is the functional proof that
+  # imagemagick-jpeg/-webp/-heic/-svg/-tiff made it into the image
+  - name: 'Delegate formats available'
+    command: 'magick'
+    args: ['-list', 'format']
+    expectedOutput:
+      - 'JPEG'
+      - 'WEBP'
+      - 'HEIC'
+      - 'SVG'
+      - 'TIFF'
+    exitCode: 0
+
+  # Runs as the image's default user (magick), so this also proves the
+  # /tmp/workdir chown made the working directory writable
+  - name: 'Generate and convert image roundtrip'
+    command: 'sh'
+    args: ['-c', 'magick -size 1x1 xc:red /tmp/workdir/test.png && magick /tmp/workdir/test.png /tmp/workdir/test.jpg && magick identify /tmp/workdir/test.jpg']
+    expectedOutput:
+      - 'JPEG'
+    exitCode: 0
+
+  - name: 'Check working directory'
+    command: 'pwd'
+    args: []
+    expectedOutput: ['/tmp/workdir']
+    exitCode: 0
+
+  - name: 'Non-root user exists'
+    command: 'id'
+    args: ['magick']
+    exitCode: 0
+    expectedOutput:
+      - 'uid='
+      - 'magick'

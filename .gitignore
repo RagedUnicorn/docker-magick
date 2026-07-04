@@ -1,0 +1,23 @@
+# Environment files
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Media files (local working directory) — ignored
+media/*
+!media/input/
+media/input/*
+!media/input/image.png
+
+# Temporary files
+*.tmp
+*.log
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
