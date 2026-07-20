@@ -1,6 +1,6 @@
 # Release Process
 
-This document describes how to create a new release for the Docker ImageMagick project.
+This document describes how to create a new release for the docker-magick project.
 
 ## Quick Start
 

@@ -1,4 +1,4 @@
-# ImageMagick Docker Examples
+# magick Docker Examples
 
 This directory contains docker-compose configurations for common image processing tasks.
 

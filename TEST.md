@@ -1,6 +1,6 @@
 # Testing Guide
 
-This document describes how to test the ImageMagick Docker image using Container Structure Tests.
+This document describes how to test the magick Docker image using Container Structure Tests.
 
 ## Quick Start
 
@@ -53,7 +53,7 @@ Validates:
 ### Prerequisites
 
 1. Docker must be installed and running
-2. Build the ImageMagick image locally before testing
+2. Build the magick image locally before testing
 
 ### Important: Always Test Local Builds
 

@@ -1,6 +1,6 @@
 # Docker Compose configuration for development
 #
-# This file is used for building and testing the ImageMagick image locally
+# This file is used for building and testing the magick image locally
 #
 # Usage:
 #   docker-compose -f docker-compose.dev.yml build

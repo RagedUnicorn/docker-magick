@@ -1,6 +1,6 @@
 # Development Guide
 
-This document provides information for developers working on the ImageMagick Docker image.
+This document provides information for developers working on the magick Docker image.
 
 ## Development Environment
 
@@ -138,6 +138,11 @@ The Alpine version is referenced in several places that must stay aligned:
 
 All of these resolve to the same `alpine` dependency at the same version, so Renovate bumps them together in a single
 PR — the base image, the label, and the metadata test no longer drift apart. No manual sync step is required.
+
+**Repology lookup warnings:** Renovate occasionally reports repository problems like "Repology lookup failed with
+unexpected error" or "Failed to look up repology package alpine_X_XX/imagemagick: no-result". The Repology API
+rate-limits aggressively, so these lookups fail transiently — as long as the depName matches an existing Repology
+repository/package pair, no config change is needed and the warning clears on a later Renovate run.
 
 **ImageMagick version pinning caveat:** the Dockerfile pins the apk package
 (`imagemagick=${IMAGEMAGICK_VERSION}`). Alpine's package index only serves the latest version per branch, so when the
