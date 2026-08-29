@@ -1,5 +1,7 @@
 # ImageMagick Alpine Docker Image
 
+![Docker Magick](https://raw.githubusercontent.com/RagedUnicorn/docker-magick/master/docs/docker_magick_banner.png)
+
 A lightweight ImageMagick 7 installation on Alpine Linux with the delegate libraries for common image formats.
 
 ## Quick Start
