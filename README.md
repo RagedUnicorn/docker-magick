@@ -1,6 +1,6 @@
 # docker-magick
 
-![](./docs/docker_magick.png)
+![](./docs/docker_magick_banner.svg)
 
 [![Release Build](https://github.com/RagedUnicorn/docker-magick/actions/workflows/docker_release.yml/badge.svg)](https://github.com/RagedUnicorn/docker-magick/actions/workflows/docker_release.yml)
 [![Test](https://github.com/RagedUnicorn/docker-magick/actions/workflows/test.yml/badge.svg)](https://github.com/RagedUnicorn/docker-magick/actions/workflows/test.yml)
