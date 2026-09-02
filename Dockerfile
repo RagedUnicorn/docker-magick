@@ -4,7 +4,7 @@
 FROM alpine:3.24.1
 
 # renovate: datasource=repology depName=alpine_3_24/imagemagick versioning=loose
-ARG IMAGEMAGICK_VERSION=7.1.2.24-r0
+ARG IMAGEMAGICK_VERSION=7.1.2.30-r0
 ARG BUILD_DATE
 ARG VERSION
 
