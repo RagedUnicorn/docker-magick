@@ -40,6 +40,26 @@ commandTests:
       - 'JPEG'
     exitCode: 0
 
+  # freetype, fontconfig and raqm are linked in, but they are only the machinery.
+  # Without a font file installed, -list font comes back empty and every
+  # -annotate, -draw "text" and label: fails with "unable to read font `'",
+  # which reads like a bad argument rather than a missing package
+  - name: 'Fonts available for text rendering'
+    command: 'magick'
+    args: ['-list', 'font']
+    expectedOutput:
+      - 'DejaVu'
+    exitCode: 0
+
+  # The functional proof: rendering a glyph needs the font file itself, and the
+  # default font has to resolve without -font being passed
+  - name: 'Render text into an image'
+    command: 'sh'
+    args: ['-c', 'magick -size 320x80 xc:white -gravity center -pointsize 36 -fill black -annotate 0 "RagedUnicorn" /tmp/workdir/text.png && magick identify /tmp/workdir/text.png']
+    expectedOutput:
+      - 'PNG 320x80'
+    exitCode: 0
+
   - name: 'Check working directory'
     command: 'pwd'
     args: []

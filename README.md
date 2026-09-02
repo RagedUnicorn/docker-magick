@@ -21,6 +21,7 @@ resize, and inspect images without installing ImageMagick on your host.
 - **Small footprint**: Alpine Linux base with only the needed format delegates
 - **ImageMagick 7**: The modern `magick` CLI (legacy `convert`/`identify`/`mogrify` entry points included)
 - **Common format support**: JPEG, PNG, GIF, WebP, HEIC/AVIF (read), SVG, and TIFF
+- **Text rendering**: DejaVu fonts installed and wired into `type.xml`, so `-annotate`, `-draw "text"` and `label:` work without passing `-font`
 - **Non-root**: Runs as the unprivileged `magick` user by default
 - **Volume mounting**: Easy file input/output through `/tmp/workdir`
 

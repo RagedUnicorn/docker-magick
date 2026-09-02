@@ -22,6 +22,7 @@ docker run -v $(pwd):/tmp/workdir ragedunicorn/magick:latest input.png output.jp
 - 🚀 **Small footprint**: Alpine Linux base with only the needed format delegates
 - 📦 **ImageMagick 7**: The modern `magick` CLI (legacy `convert`/`identify` entry points included)
 - 🖼️ **Common format support**: JPEG, PNG, GIF, WebP, HEIC/AVIF (read), SVG, TIFF
+- 🔤 **Text rendering**: DejaVu fonts included, so `-annotate` and `label:` work out of the box
 - 🔒 **Non-root**: Runs as the unprivileged `magick` user by default
 - 🏗️ **Multi-platform**: Supports linux/amd64 and linux/arm64
 

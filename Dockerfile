@@ -25,14 +25,39 @@ LABEL org.opencontainers.image.title="ImageMagick on Alpine Linux" \
 # HEIC, SVG and TIFF live in delegate subpackages. All subpackages are built
 # from the same aport, so they share the exact same version pin.
 # ca-certificates provides the TLS trust store (family convention).
+#
+# font-dejavu is what makes text work at all. ImageMagick links freetype,
+# fontconfig and raqm, but those are only the machinery: with no font file
+# installed `magick -list font` comes back empty and every -annotate, -draw
+# "text" and label: fails with "unable to read font `'", which reads like a
+# broken argument rather than a missing package.
 RUN apk add --no-cache \
     ca-certificates \
+    font-dejavu \
     imagemagick=${IMAGEMAGICK_VERSION} \
     imagemagick-jpeg=${IMAGEMAGICK_VERSION} \
     imagemagick-webp=${IMAGEMAGICK_VERSION} \
     imagemagick-heic=${IMAGEMAGICK_VERSION} \
     imagemagick-svg=${IMAGEMAGICK_VERSION} \
     imagemagick-tiff=${IMAGEMAGICK_VERSION}
+
+# Give ImageMagick a usable default font.
+#
+# font-dejavu puts the files on disk and fontconfig lists them, but ImageMagick
+# resolves an unspecified font through type.xml, not through fontconfig. With no
+# matching entry the default font is the empty string and every -annotate,
+# -draw "text" and label: without an explicit -font fails with
+# "unable to read font `'". The shipped type-dejavu.xml does not help: its
+# glyphs point at URWGothic-Book.ttf and friends, which only font-urw-base35
+# provides. The ghostscript include is kept as it ships.
+RUN printf '%s\n' \
+    '<?xml version="1.0"?>' \
+    '<typemap>' \
+    '  <include file="type-ghostscript.xml"/>' \
+    '  <type name="helvetica" fullname="DejaVu Sans" family="DejaVu Sans" glyphs="/usr/share/fonts/dejavu/DejaVuSans.ttf"/>' \
+    '  <type name="fixed" fullname="DejaVu Sans Mono" family="DejaVu Sans Mono" glyphs="/usr/share/fonts/dejavu/DejaVuSansMono.ttf"/>' \
+    '</typemap>' \
+    > /etc/ImageMagick-7/type.xml
 
 # Create non-root user for running ImageMagick. A home directory is created
 # deliberately (no -H): fontconfig, pulled in via the SVG delegate, wants a
