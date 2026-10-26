@@ -1,7 +1,7 @@
 ############################################
 # ImageMagick runtime image
 ############################################
-FROM alpine:3.24.2
+FROM alpine:3.24.3
 
 # renovate: datasource=repology depName=alpine_3_24/imagemagick versioning=loose
 ARG IMAGEMAGICK_VERSION=7.1.2.34-r0
@@ -18,7 +18,7 @@ LABEL org.opencontainers.image.title="ImageMagick on Alpine Linux" \
       org.opencontainers.image.licenses="MIT" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.created="${BUILD_DATE}" \
-      org.opencontainers.image.base.name="docker.io/library/alpine:3.24.2"
+      org.opencontainers.image.base.name="docker.io/library/alpine:3.24.3"
 
 # ImageMagick and its format delegates from the Alpine community repository.
 # PNG and GIF coders are part of the main imagemagick package; JPEG, WebP,
