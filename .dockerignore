@@ -2,18 +2,25 @@
 .git
 *.md
 LICENSE*
+docs/
 
 # CI/CD
 .github/
+renovate.json
 
 # Development
 .env
 .vscode/
 .idea/
+.run/
+.editorconfig
+.gitattributes
+.gitignore
 
 # Test files
 test/
 docker-compose*.yml
+examples/
 
 # Media files
 media/
