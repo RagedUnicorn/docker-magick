@@ -17,6 +17,10 @@ fileExistenceTests:
     path: '/usr/bin/identify'
     shouldExist: true
 
+  - name: 'Legacy mogrify entry point exists'
+    path: '/usr/bin/mogrify'
+    shouldExist: true
+
   - name: 'ImageMagick security policy exists'
     path: '/etc/ImageMagick-7/policy.xml'
     shouldExist: true
