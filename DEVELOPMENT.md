@@ -90,30 +90,30 @@ docker build -t ragedunicorn/magick:test .
 
 ```bash
 # Run all tests against your local build
-MAGICK_VERSION=test docker compose -f docker-compose.test.yml run test-all
+MAGICK_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
 
 # Run specific tests during development
-MAGICK_VERSION=test docker compose -f docker-compose.test.yml up container-test-command
+MAGICK_TEST_VERSION=test docker compose -f docker-compose.test.yml up container-test-command
 ```
 
 **Windows Command Prompt:**
 
 ```cmd
 # Run all tests against your local build
-set MAGICK_VERSION=test && docker compose -f docker-compose.test.yml run test-all
+set MAGICK_TEST_VERSION=test && docker compose -f docker-compose.test.yml run test-all
 
 # Run specific tests during development
-set MAGICK_VERSION=test && docker compose -f docker-compose.test.yml up container-test-command
+set MAGICK_TEST_VERSION=test && docker compose -f docker-compose.test.yml up container-test-command
 ```
 
 **Windows PowerShell:**
 
 ```powershell
 # Run all tests against your local build
-$env:MAGICK_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
+$env:MAGICK_TEST_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
 
 # Run specific tests during development
-$env:MAGICK_VERSION="test"; docker compose -f docker-compose.test.yml up container-test-command
+$env:MAGICK_TEST_VERSION="test"; docker compose -f docker-compose.test.yml up container-test-command
 ```
 
 **Important:** Never test against remote images - they may have different labels or configurations due to CI/CD overrides.

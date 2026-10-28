@@ -68,21 +68,21 @@ docker build -t ragedunicorn/magick:test .
 
 ```bash
 # Run tests against your local build
-MAGICK_VERSION=test docker compose -f docker-compose.test.yml run test-all
+MAGICK_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
 # Run tests against your local build
-$env:MAGICK_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
+$env:MAGICK_TEST_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (Command Prompt):**
 
 ```cmd
 # Run tests against your local build
-set MAGICK_VERSION=test && docker compose -f docker-compose.test.yml run test-all
+set MAGICK_TEST_VERSION=test && docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Why local testing is important:**
@@ -106,14 +106,14 @@ Linux/macOS:
 
 ```bash
 docker build -t ragedunicorn/magick:test .
-MAGICK_VERSION=test docker compose -f docker-compose.test.yml run test-all
+MAGICK_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
 ```
 
 Windows (PowerShell):
 
 ```powershell
 docker build -t ragedunicorn/magick:test .
-$env:MAGICK_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
+$env:MAGICK_TEST_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
 ```
 
 ### Test Execution
@@ -124,21 +124,21 @@ Run all tests against your local build:
 
 ```bash
 # Ensure you've built locally first!
-MAGICK_VERSION=test docker compose -f docker-compose.test.yml run test-all
+MAGICK_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
 # Ensure you've built locally first!
-$env:MAGICK_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
+$env:MAGICK_TEST_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (Command Prompt):**
 
 ```cmd
 # Ensure you've built locally first!
-set MAGICK_VERSION=test && docker compose -f docker-compose.test.yml run test-all
+set MAGICK_TEST_VERSION=test && docker compose -f docker-compose.test.yml run test-all
 ```
 
 Run specific test categories:
@@ -147,26 +147,26 @@ Run specific test categories:
 
 ```bash
 # File structure and library tests
-MAGICK_VERSION=test docker compose -f docker-compose.test.yml up container-test
+MAGICK_TEST_VERSION=test docker compose -f docker-compose.test.yml up container-test
 
 # Command execution and format tests
-MAGICK_VERSION=test docker compose -f docker-compose.test.yml up container-test-command
+MAGICK_TEST_VERSION=test docker compose -f docker-compose.test.yml up container-test-command
 
 # Metadata and label tests
-MAGICK_VERSION=test docker compose -f docker-compose.test.yml up container-test-metadata
+MAGICK_TEST_VERSION=test docker compose -f docker-compose.test.yml up container-test-metadata
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
 # File structure and library tests
-$env:MAGICK_VERSION="test"; docker compose -f docker-compose.test.yml up container-test
+$env:MAGICK_TEST_VERSION="test"; docker compose -f docker-compose.test.yml up container-test
 
 # Command execution and format tests
-$env:MAGICK_VERSION="test"; docker compose -f docker-compose.test.yml up container-test-command
+$env:MAGICK_TEST_VERSION="test"; docker compose -f docker-compose.test.yml up container-test-command
 
 # Metadata and label tests
-$env:MAGICK_VERSION="test"; docker compose -f docker-compose.test.yml up container-test-metadata
+$env:MAGICK_TEST_VERSION="test"; docker compose -f docker-compose.test.yml up container-test-metadata
 ```
 
 ### Testing Different Versions
@@ -182,14 +182,14 @@ docker build -t ragedunicorn/magick:7.1.2.24-alpine3.24.1-1 .
 
 ```bash
 # Test that specific version
-MAGICK_VERSION=7.1.2.24-alpine3.24.1-1 docker compose -f docker-compose.test.yml run test-all
+MAGICK_TEST_VERSION=7.1.2.24-alpine3.24.1-1 docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
 # Test that specific version
-$env:MAGICK_VERSION="7.1.2.24-alpine3.24.1-1"; docker compose -f docker-compose.test.yml run test-all
+$env:MAGICK_TEST_VERSION="7.1.2.24-alpine3.24.1-1"; docker compose -f docker-compose.test.yml run test-all
 ```
 
 ## Troubleshooting Test Failures
@@ -215,7 +215,7 @@ docker run --rm --entrypoint sh ragedunicorn/magick:latest -c \
 
 1. **Testing remote images instead of local builds**
    - Remote images (Docker Hub, GHCR) have labels overridden by CI/CD
-   - Always test your local builds with `MAGICK_VERSION=test`
+   - Always test your local builds with `MAGICK_TEST_VERSION=test`
 
 2. **Label value mismatches**
    - CI/CD systems may capitalize values (e.g., "RagedUnicorn" vs "ragedunicorn")
@@ -242,13 +242,13 @@ docker build -t ragedunicorn/magick:test .
 Linux/macOS:
 
 ```bash
-MAGICK_VERSION=test docker compose -f docker-compose.test.yml run test-all
+MAGICK_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
 ```
 
 Windows (PowerShell):
 
 ```powershell
-$env:MAGICK_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
+$env:MAGICK_TEST_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
 ```
 
 ### Permission Errors
@@ -304,7 +304,7 @@ Manual integration example:
 ```yaml
 - name: Run Container Structure Tests
   env:
-    MAGICK_VERSION: test
+    MAGICK_TEST_VERSION: test
   run: docker compose -f docker-compose.test.yml run test-all
 ```
 
