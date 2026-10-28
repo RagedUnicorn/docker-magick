@@ -88,6 +88,18 @@
     },
     {
       "customType": "regex",
+      "description": "Keep the ImageMagick version in the command test in sync with the pinned apk version (major.minor.patch only, as printed by magick -version)",
+      "managerFilePatterns": [
+        "/^test/magick_command_test\\.yml$/"
+      ],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+) versioning=(?<versioning>\\S+)\\s+- 'ImageMagick (?<currentValue>\\d+\\.\\d+\\.\\d+)'"
+      ],
+      "versioningTemplate": "{{{versioning}}}",
+      "extractVersionTemplate": "^(?<version>\\d+\\.\\d+\\.\\d+)"
+    },
+    {
+      "customType": "regex",
       "description": "Keep the container-structure-test harness pin in .env up to date",
       "managerFilePatterns": [
         "/^\\.env$/"

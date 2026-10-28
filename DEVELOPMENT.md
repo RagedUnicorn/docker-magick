@@ -160,9 +160,11 @@ ARG IMAGEMAGICK_VERSION=7.1.2.24-r0
 When the `alpine` group PR bumps the base image to a new minor release, that PR will fail CI because the pinned
 ImageMagick version usually does not exist on the new branch. Fix it inside the same PR:
 
-1. Update the branch in the depName: `alpine_3_24/imagemagick` → `alpine_3_25/imagemagick`
+1. Update the branch in the depName: `alpine_3_24/imagemagick` → `alpine_3_25/imagemagick` — in both the
+   Dockerfile and the matching Renovate comment in `test/magick_command_test.yml`
 2. Set `IMAGEMAGICK_VERSION` to the version the new branch ships (check
-   [pkgs.alpinelinux.org](https://pkgs.alpinelinux.org/packages?name=imagemagick))
+   [pkgs.alpinelinux.org](https://pkgs.alpinelinux.org/packages?name=imagemagick)), and the `ImageMagick X.Y.Z`
+   assertion in `test/magick_command_test.yml` to its major.minor.patch
 3. Update the version examples in the documentation if needed
 
 When Renovate creates a PR:

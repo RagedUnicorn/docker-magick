@@ -316,8 +316,9 @@ The `test-all` service returns:
 
 When updating the Docker image:
 
-1. **ImageMagick version updates**: Usually no test changes needed (the version check asserts `ImageMagick 7.1.2`,
-   which only needs loosening on a minor version jump)
+1. **ImageMagick version updates**: The `ImageMagick X.Y.Z` assertion in `test/magick_command_test.yml` is kept in
+   sync with the Dockerfile `IMAGEMAGICK_VERSION` ARG by Renovate (same Repology `imagemagick` dependency, trimmed to
+   major.minor.patch as printed by `magick -version`, bumped in the same automerged PR); bump it by hand on a manual update
 2. **Alpine version updates**: The Alpine version in `test/magick_metadata_test.yml` is kept in sync with the
    Dockerfile by Renovate (same `alpine` dependency bumps everywhere together)
 3. **New delegate additions**: Add corresponding tests to verify functionality

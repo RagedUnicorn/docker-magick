@@ -5,6 +5,7 @@ commandTests:
     command: 'magick'
     args: ['-version']
     expectedOutput:
+      # renovate: datasource=repology depName=alpine_3_24/imagemagick versioning=loose
       - 'ImageMagick 7.1.2'
     exitCode: 0
 
