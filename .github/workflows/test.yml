@@ -68,6 +68,7 @@ jobs:
       - name: Test basic ImageMagick functionality
         id: basic-tests
         continue-on-error: true
+        shell: bash
         run: |
           echo "::group::🎨 Basic ImageMagick Functionality Test"
           {
@@ -75,7 +76,8 @@ jobs:
             docker run --rm ragedunicorn/magick:test -version
             echo ""
             echo "Testing available formats..."
-            docker run --rm ragedunicorn/magick:test -list format | grep -E "(JPEG|WEBP|HEIC|SVG|TIFF)" | head -10
+            formats=$(docker run --rm ragedunicorn/magick:test -list format)
+            grep -m 10 -E "(JPEG|WEBP|HEIC|SVG|TIFF)" <<< "$formats"
             echo ""
             echo "Testing generate and convert roundtrip..."
             docker run --rm --entrypoint sh ragedunicorn/magick:test -c "magick -size 1x1 xc:red /tmp/workdir/test.png && magick /tmp/workdir/test.png /tmp/workdir/test.jpg && magick identify /tmp/workdir/test.jpg"
