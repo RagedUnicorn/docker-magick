@@ -60,6 +60,18 @@ docker pull ragedunicorn/magick:latest
 docker run -v $(pwd):/tmp/workdir ragedunicorn/magick:latest input.png output.jpg
 ```
 
+On Windows, use the PowerShell form:
+
+```powershell
+# Convert an image in the current directory
+docker run -v "${PWD}:/tmp/workdir" ragedunicorn/magick:latest input.png output.jpg
+```
+
+Write `${PWD}` **with braces** and keep the colon inside the quotes - without
+braces PowerShell parses `$PWD:` as a scope-qualified variable (as in
+`$env:PATH`) and rejects the argument. See the
+[Windows (PowerShell) notes](#windows-powershell-notes) for details.
+
 For development and building from source, see [DEVELOPMENT.md](DEVELOPMENT.md).
 
 ## Usage
@@ -68,8 +80,6 @@ The container uses `magick` as the entrypoint, so any ImageMagick parameters can
 `docker run` command. Running the image without arguments prints the ImageMagick version.
 
 ### Basic Usage
-
-**Linux/macOS:**
 
 ```bash
 # Using latest version
@@ -82,14 +92,17 @@ docker run -v $(pwd):/tmp/workdir ragedunicorn/magick:7.1.2.24 [magick-options]
 docker run -v $(pwd):/tmp/workdir ragedunicorn/magick:7.1.2.24-alpine3.24.1-1 [magick-options]
 ```
 
-**Windows (PowerShell):**
+PowerShell:
 
 ```powershell
 # Using latest version
-docker run -v ${PWD}:/tmp/workdir ragedunicorn/magick:latest [magick-options]
+docker run -v "${PWD}:/tmp/workdir" ragedunicorn/magick:latest [magick-options]
 
 # Using specific ImageMagick version (latest Alpine build)
-docker run -v ${PWD}:/tmp/workdir ragedunicorn/magick:7.1.2.24 [magick-options]
+docker run -v "${PWD}:/tmp/workdir" ragedunicorn/magick:7.1.2.24 [magick-options]
+
+# Using exact version combination
+docker run -v "${PWD}:/tmp/workdir" ragedunicorn/magick:7.1.2.24-alpine3.24.1-1 [magick-options]
 ```
 
 ### Examples
@@ -100,8 +113,10 @@ docker run -v ${PWD}:/tmp/workdir ragedunicorn/magick:7.1.2.24 [magick-options]
 docker run -v $(pwd):/tmp/workdir ragedunicorn/magick:latest input.png output.jpg
 ```
 
+PowerShell:
+
 ```powershell
-docker run -v ${PWD}:/tmp/workdir ragedunicorn/magick:latest input.png output.jpg
+docker run -v "${PWD}:/tmp/workdir" ragedunicorn/magick:latest input.png output.jpg
 ```
 
 #### Resize an Image
@@ -110,10 +125,22 @@ docker run -v ${PWD}:/tmp/workdir ragedunicorn/magick:latest input.png output.jp
 docker run -v $(pwd):/tmp/workdir ragedunicorn/magick:latest input.jpg -resize 50% output.jpg
 ```
 
+PowerShell:
+
+```powershell
+docker run -v "${PWD}:/tmp/workdir" ragedunicorn/magick:latest input.jpg -resize 50% output.jpg
+```
+
 #### Create a Thumbnail
 
 ```bash
 docker run -v $(pwd):/tmp/workdir ragedunicorn/magick:latest input.jpg -thumbnail 150x150 thumbnail.jpg
+```
+
+PowerShell:
+
+```powershell
+docker run -v "${PWD}:/tmp/workdir" ragedunicorn/magick:latest input.jpg -thumbnail 150x150 thumbnail.jpg
 ```
 
 #### Get Image Information
@@ -122,10 +149,22 @@ docker run -v $(pwd):/tmp/workdir ragedunicorn/magick:latest input.jpg -thumbnai
 docker run -v $(pwd):/tmp/workdir ragedunicorn/magick:latest identify input.png
 ```
 
+PowerShell:
+
+```powershell
+docker run -v "${PWD}:/tmp/workdir" ragedunicorn/magick:latest identify input.png
+```
+
 #### Convert iPhone Photos (HEIC to JPEG)
 
 ```bash
 docker run -v $(pwd):/tmp/workdir ragedunicorn/magick:latest photo.heic photo.jpg
+```
+
+PowerShell:
+
+```powershell
+docker run -v "${PWD}:/tmp/workdir" ragedunicorn/magick:latest photo.heic photo.jpg
 ```
 
 #### Strip Metadata
@@ -134,11 +173,60 @@ docker run -v $(pwd):/tmp/workdir ragedunicorn/magick:latest photo.heic photo.jp
 docker run -v $(pwd):/tmp/workdir ragedunicorn/magick:latest input.jpg -strip output.jpg
 ```
 
+PowerShell:
+
+```powershell
+docker run -v "${PWD}:/tmp/workdir" ragedunicorn/magick:latest input.jpg -strip output.jpg
+```
+
 #### Create an Animated GIF from Images
 
 ```bash
 docker run -v $(pwd):/tmp/workdir ragedunicorn/magick:latest -delay 20 -loop 0 "frame*.png" animation.gif
 ```
+
+PowerShell:
+
+```powershell
+docker run -v "${PWD}:/tmp/workdir" ragedunicorn/magick:latest -delay 20 -loop 0 "frame*.png" animation.gif
+```
+
+Keep the quotes around `"frame*.png"` in both shells: ImageMagick expands the
+wildcard inside the container, against the files in `/tmp/workdir`.
+
+### Windows (PowerShell) notes
+
+The PowerShell variants above differ from the bash ones only in the mount,
+which is written `-v "${PWD}:/tmp/workdir"` instead of `-v $(pwd):/tmp/workdir`.
+The ImageMagick arguments after the image name are passed through unchanged.
+
+The mount spelling matters:
+
+- Pasting the bash form into PowerShell breaks: an argument that starts with
+  `$(pwd)` ends after the subexpression, so `$(pwd):/tmp/workdir` reaches
+  Docker as two arguments (`C:\path` and `:/tmp/workdir`) and fails with
+  `invalid reference format`.
+- `"$PWD:/tmp/workdir"` without braces is a parse error: PowerShell reads a
+  colon after a variable as a scope qualifier (as in `$env:PATH`), and `/` is
+  not a valid variable-name character.
+- `"${PWD}:/tmp/workdir"` works: the braces end the variable name at `PWD`, the
+  colon stays literal, and Docker splits the resulting `C:\path:/tmp/workdir`
+  on the second colon because it recognises the `C:` drive prefix.
+
+The image runs as the non-root `magick` user. On Windows hosts this needs no
+extra flags: Docker Desktop bind mounts do not carry Unix file ownership, so
+the container can write its output files into the mounted directory.
+
+To check what the container actually sees under `/tmp/workdir`, run a
+look-inside command:
+
+```powershell
+docker run --rm -v "${PWD}:/tmp/workdir" --entrypoint sh ragedunicorn/magick:latest -c 'pwd; ls -la /tmp/workdir'
+```
+
+The single quotes keep the `sh -c` command one literal argument; unquoted,
+PowerShell would treat `;` as its own statement separator and run
+`ls -la /tmp/workdir` on the host.
 
 ## Docker Compose Usage
 
@@ -152,6 +240,12 @@ This repository includes Docker Compose configurations for easier usage and comm
 mkdir -p media/input media/output
 ```
 
+PowerShell:
+
+```powershell
+New-Item -ItemType Directory -Force media/input, media/output
+```
+
 2. Place your input files in `media/input/`
 
 3. Run ImageMagick using docker compose:
@@ -159,6 +253,9 @@ mkdir -p media/input media/output
 ```bash
 docker compose run --rm magick input/image.png output/image.jpg
 ```
+
+The `docker compose` commands in this section mount `./media` through the
+compose file, so they run unchanged in PowerShell.
 
 ### Example Configurations
 

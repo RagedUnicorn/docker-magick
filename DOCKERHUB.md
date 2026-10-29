@@ -17,6 +17,15 @@ docker pull ragedunicorn/magick:7.1.2.24-alpine3.24.1-1
 docker run -v $(pwd):/tmp/workdir ragedunicorn/magick:latest input.png output.jpg
 ```
 
+On Windows, use the PowerShell form - `${PWD}` **with braces** and the colon
+inside the quotes (without braces PowerShell parses `$PWD:` as a
+scope-qualified variable, as in `$env:PATH`, and rejects the argument):
+
+```powershell
+# Convert an image
+docker run -v "${PWD}:/tmp/workdir" ragedunicorn/magick:latest input.png output.jpg
+```
+
 ## Features
 
 - 🚀 **Small footprint**: Alpine Linux base with only the needed format delegates
@@ -41,10 +50,24 @@ docker run -v $(pwd):/tmp/workdir ragedunicorn/magick:latest \
   input.png output.jpg
 ```
 
+PowerShell:
+
+```powershell
+docker run -v "${PWD}:/tmp/workdir" ragedunicorn/magick:latest `
+  input.png output.jpg
+```
+
 ### Resize an image
 
 ```bash
 docker run -v $(pwd):/tmp/workdir ragedunicorn/magick:latest \
+  input.jpg -resize 50% output.jpg
+```
+
+PowerShell:
+
+```powershell
+docker run -v "${PWD}:/tmp/workdir" ragedunicorn/magick:latest `
   input.jpg -resize 50% output.jpg
 ```
 
@@ -55,10 +78,24 @@ docker run -v $(pwd):/tmp/workdir ragedunicorn/magick:latest \
   input.jpg -thumbnail 150x150 thumbnail.jpg
 ```
 
+PowerShell:
+
+```powershell
+docker run -v "${PWD}:/tmp/workdir" ragedunicorn/magick:latest `
+  input.jpg -thumbnail 150x150 thumbnail.jpg
+```
+
 ### Convert iPhone photos (HEIC to JPEG)
 
 ```bash
 docker run -v $(pwd):/tmp/workdir ragedunicorn/magick:latest \
+  photo.heic photo.jpg
+```
+
+PowerShell:
+
+```powershell
+docker run -v "${PWD}:/tmp/workdir" ragedunicorn/magick:latest `
   photo.heic photo.jpg
 ```
 
