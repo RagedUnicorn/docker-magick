@@ -62,18 +62,26 @@ The development mode:
 # Basic build
 docker build -t ragedunicorn/magick:dev .
 
-# Build with specific versions
+# Build with version metadata (ImageMagick and Alpine come from the Dockerfile)
 docker build \
-  --build-arg IMAGEMAGICK_VERSION=7.1.2.24-r0 \
   --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
-  --build-arg VERSION=7.1.2.24-alpine3.24.1-1 \
-  -t ragedunicorn/magick:7.1.2.24-alpine3.24.1-1 .
+  --build-arg VERSION=dev \
+  -t ragedunicorn/magick:dev .
+
+# Build a different ImageMagick package version than the Dockerfile default
+docker build \
+  --build-arg IMAGEMAGICK_VERSION=<imagemagick-version>-r<pkgrel> \
+  -t ragedunicorn/magick:dev .
 
 # Multi-platform build (requires buildx)
 docker buildx build \
   --platform linux/amd64,linux/arm64 \
   -t ragedunicorn/magick:dev .
 ```
+
+The ImageMagick version is the `IMAGEMAGICK_VERSION` default in the `Dockerfile`
+and the Alpine version is its `FROM` line. Renovate keeps both current, so the
+docs do not repeat them.
 
 ### 3. Testing Your Changes
 
@@ -154,7 +162,7 @@ Alpine branch in the Repology package name:
 
 ```dockerfile
 # renovate: datasource=repology depName=alpine_3_24/imagemagick versioning=loose
-ARG IMAGEMAGICK_VERSION=7.1.2.24-r0
+ARG IMAGEMAGICK_VERSION=<imagemagick-version>-r<pkgrel>
 ```
 
 When the `alpine` group PR bumps the base image to a new minor release, that PR will fail CI because the pinned
@@ -165,7 +173,6 @@ ImageMagick version usually does not exist on the new branch. Fix it inside the 
 2. Set `IMAGEMAGICK_VERSION` to the version the new branch ships (check
    [pkgs.alpinelinux.org](https://pkgs.alpinelinux.org/packages?name=imagemagick)), and the `ImageMagick X.Y.Z`
    assertion in `test/magick_command_test.yml` to its major.minor.patch
-3. Update the version examples in the documentation if needed
 
 When Renovate creates a PR:
 

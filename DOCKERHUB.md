@@ -10,8 +10,8 @@ A lightweight ImageMagick 7 installation on Alpine Linux with the delegate libra
 # Pull latest version
 docker pull ragedunicorn/magick:latest
 
-# Or pull specific version
-docker pull ragedunicorn/magick:7.1.2.24-alpine3.24.1-1
+# Or pull specific version (see the Tags tab for the available versions)
+docker pull ragedunicorn/magick:<imagemagick-version>-alpine<alpine-version>-<build>
 
 # Convert an image
 docker run -v $(pwd):/tmp/workdir ragedunicorn/magick:latest input.png output.jpg
@@ -107,10 +107,16 @@ This image uses semantic versioning that includes all component versions:
 
 ### Version Examples
 
-- `7.1.2.24-alpine3.24.1-1` - Initial release with ImageMagick 7.1.2.24 and Alpine 3.24.1
-- `7.1.2.24-alpine3.24.1-2` - Rebuild of same versions (bug fixes, security patches)
-- `7.1.2.24-alpine3.24.2-1` - Alpine Linux patch update
-- `7.1.2.25-alpine3.24.1-1` - ImageMagick version update
+`W.X.Y.Z` is the 4-part ImageMagick version, `A.B.C` the Alpine version:
+
+- `W.X.Y.Z-alpineA.B.C-1` - ImageMagick W.X.Y.Z on Alpine A.B.C, first build
+- `W.X.Y.Z-alpineA.B.C-2` - Rebuild of same versions (bug fixes, security patches)
+- `W.X.Y.Z-alpineA.B.D-1` - Alpine Linux patch update
+- `W.X.Y.Q-alpineA.B.C-1` - ImageMagick version update (build resets to 1)
+- `W.X.Y.Z` - Most recent build of ImageMagick W.X.Y.Z
+- `latest` - Most recent stable release
+
+The available versions are listed in the [Tags tab](https://hub.docker.com/r/ragedunicorn/magick/tags).
 
 When updates are available through automated dependency management, new releases are created with appropriate version tags.
 

@@ -175,21 +175,21 @@ When testing different versions, always build locally first:
 
 ```bash
 # Build a specific version locally
-docker build -t ragedunicorn/magick:7.1.2.24-alpine3.24.1-1 .
+docker build -t ragedunicorn/magick:<imagemagick-version>-alpine<alpine-version>-<build> .
 ```
 
 **Linux/macOS:**
 
 ```bash
 # Test that specific version
-MAGICK_TEST_VERSION=7.1.2.24-alpine3.24.1-1 docker compose -f docker-compose.test.yml run test-all
+MAGICK_TEST_VERSION=<imagemagick-version>-alpine<alpine-version>-<build> docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
 # Test that specific version
-$env:MAGICK_TEST_VERSION="7.1.2.24-alpine3.24.1-1"; docker compose -f docker-compose.test.yml run test-all
+$env:MAGICK_TEST_VERSION="<imagemagick-version>-alpine<alpine-version>-<build>"; docker compose -f docker-compose.test.yml run test-all
 ```
 
 ## Troubleshooting Test Failures

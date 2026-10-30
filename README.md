@@ -86,10 +86,10 @@ The container uses `magick` as the entrypoint, so any ImageMagick parameters can
 docker run -v $(pwd):/tmp/workdir ragedunicorn/magick:latest [magick-options]
 
 # Using specific ImageMagick version (latest Alpine build)
-docker run -v $(pwd):/tmp/workdir ragedunicorn/magick:7.1.2.24 [magick-options]
+docker run -v $(pwd):/tmp/workdir ragedunicorn/magick:<imagemagick-version> [magick-options]
 
 # Using exact version combination
-docker run -v $(pwd):/tmp/workdir ragedunicorn/magick:7.1.2.24-alpine3.24.1-1 [magick-options]
+docker run -v $(pwd):/tmp/workdir ragedunicorn/magick:<imagemagick-version>-alpine<alpine-version>-<build> [magick-options]
 ```
 
 PowerShell:
@@ -99,11 +99,14 @@ PowerShell:
 docker run -v "${PWD}:/tmp/workdir" ragedunicorn/magick:latest [magick-options]
 
 # Using specific ImageMagick version (latest Alpine build)
-docker run -v "${PWD}:/tmp/workdir" ragedunicorn/magick:7.1.2.24 [magick-options]
+docker run -v "${PWD}:/tmp/workdir" ragedunicorn/magick:<imagemagick-version> [magick-options]
 
 # Using exact version combination
-docker run -v "${PWD}:/tmp/workdir" ragedunicorn/magick:7.1.2.24-alpine3.24.1-1 [magick-options]
+docker run -v "${PWD}:/tmp/workdir" ragedunicorn/magick:<imagemagick-version>-alpine<alpine-version>-<build> [magick-options]
 ```
+
+Available tags are listed on [Docker Hub](https://hub.docker.com/r/ragedunicorn/magick/tags) and in the
+[GitHub releases](https://github.com/RagedUnicorn/docker-magick/releases).
 
 ### Examples
 
@@ -304,7 +307,7 @@ See [examples/README.md](examples/README.md) for the full list of example servic
    preferred version:
 
    ```env
-   MAGICK_VERSION=7.1.2.24-alpine3.24.1-1
+   MAGICK_VERSION=<imagemagick-version>-alpine<alpine-version>-<build>
    ```
 
 ## Versioning
@@ -313,9 +316,12 @@ This project uses semantic versioning that matches the Docker image contents:
 
 **Format:** `{imagemagick_version}-alpine{alpine_version}-{build_number}`
 
-Examples:
-- `7.1.2.24-alpine3.24.1-1` - ImageMagick 7.1.2.24 on Alpine 3.24.1, build 1
+Examples (`W.X.Y.Z` is the 4-part ImageMagick version, `A.B.C` the Alpine version):
+- `W.X.Y.Z-alpineA.B.C-1` - ImageMagick W.X.Y.Z on Alpine A.B.C, build 1
+- `W.X.Y.Z` - Most recent build of ImageMagick W.X.Y.Z
 - `latest` - Most recent stable release
+
+The current tags are listed on [Docker Hub](https://hub.docker.com/r/ragedunicorn/magick/tags).
 
 For detailed release process and versioning guidelines, see [RELEASE.md](RELEASE.md).
 
