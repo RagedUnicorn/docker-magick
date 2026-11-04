@@ -44,7 +44,6 @@
       "extractVersionTemplate": "^(?<version>\\d+\\.\\d+\\.\\d+)"
     }
   ],
-  "commitMessagePrefix": "chore(deps):",
   "commitMessageAction": "update",
   "commitMessageTopic": "{{depName}}",
   "commitMessageExtra": "to {{newVersion}}",
